@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: wekmad/backend-dictionary:latest
+    ports:
+      - '3000:3000'
+    environment:
+      - dbKey=${DB_KEY}
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./frontend
+    image: wekmad/frontend-dictionary:latest
+    ports:
+      - '80:80'
+    environment:
+      - VITE_BASE_URL=${VITE_BASE_URL}
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
