@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>HTML Calculator</title>
+    <script src="https:cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+    <!-- For styling -->
+    <style>
+      table {
+        border: 1px solid black;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      input[type="button"] {
+        width: 100%;
+        padding: 20px 40px;
+        background-color: green;
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+      }
+
+      input[type="text"] {
+        padding: 20px 30px;
+        font-size: 24px;
+        font-weight: bold;
+        border: none;
+        border-radius: 5px;
+        border: 2px solid black;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Create table -->
+    <table id="calcu">
+      <tr>
+        <td colspan="3">
+          <input type="text" id="result" v-model="result" readonly />
+        </td>
+        <td><input type="button" value="c" /></td>
+      </tr>
+
+      <tr>
+        <td><input type="button" value="1" /></td>
+        <td><input type="button" value="2" /></td>
+        <td><input type="button" value="3" /></td>
+        <td><input type="button" value="/" /></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="4" /></td>
+        <td><input type="button" value="5" /></td>
+        <td><input type="button" value="6" /></td>
+        <td><input type="button" value="X" /></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="7" /></td>
+        <td><input type="button" value="8" /></td>
+        <td><input type="button" value="9" /></td>
+        <td><input type="button" value="-" /></td>
+      </tr>
+      <tr>
+        <td><input type="button" value="0" /></td>
+        <td><input type="button" value="." /></td>
+        <td><input type="button" value="=" /></td>
+        <td><input type="button" value="+" /></td>
+      </tr>
+    </table>
+
+    <script>
+      const operators = ["+", "-", "*", "/"];
+      const dot = ".";
+      const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"]
+      const calcu = new Vue({
+        el: "#calcu",
+        data: {
+          result: "",
+          isCompleted: false,
+        },
+        methods: {
+          calc: function (event) {
+            console.log(this.isCompleted);
+            if (this.isCompleted) {
+              this.reset();
+            }
+            const target = event.target;
+            const value = target.value;
+            if (value === "=") {
+              this.result = eval(this.result);
+              this.isCompleted = true;
+            } else if (value === "c") {
+              this.reset();
+            } else {
+              if (operators.includes(value)) {
+                if (this.result === "") {
+                  return;
+                }
+                if (operators.includes(this.result[this.result.length - 1])) {
+                  this.result = this.result.slice(0, -1) + value;
+                  return;
+                }
+              }
+              if (value === ".") {
+                if (
+                  this.result.slice(-1) === "." ||
+                  this.result
+                    .split(/[+\-*/]/)
+                    .slice(-1)[0]
+                    .includes(".")
+                )
+                  return;
+              }
+              //if (numbers/)
+              this.result += value;
+            }
+          },
+          reset: function () {
+            this.result = "";
+            this.isCompleted = false;
+          },
+        },
+        mounted: function () {
+          const buttons = document.querySelectorAll("input[type='button']");
+          buttons.forEach((button) => {
+            button.addEventListener("click", this.calc);
+          });
+        },
+      });
+      
+        addEventListener("keydown", () => {
+          console.log(event.key);
+          if (event.key === "Enter") {
+            calcu.calc({ target: { value: "=" } });
+          }
+          if (event.key === "Escape") {
+            calcu.calc({ target: { value: "c" } });
+          }
+          if (
+            operators.includes(event.key) ||
+            numbers.includes(event.key) ||
+            event.key === "."
+          ) {
+            calcu.calc({ target: { value: event.key } });
+          }
+        });
+    </script>
+  </body>
+</html>

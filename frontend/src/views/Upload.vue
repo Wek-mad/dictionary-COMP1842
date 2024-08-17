@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>Upload CSV</h1>
+      <h1  class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">Upload CSV</h1>
       <CsvUpload @csv-uploaded="csvUploaded" />
     </div>
   </template>

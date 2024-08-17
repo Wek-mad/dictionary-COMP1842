@@ -1,0 +1,83 @@
+<html>
+  <head>
+    <title>Shopee</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+    <style>
+      .thumb img {
+        width: 150px;
+      }
+      .mainImg {
+        width: 300px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vue_app">
+      <table>
+        <tr>
+          <td colspan="3">
+            <img class="mainImg" v-bind:src="sources[index]" />
+          </td>
+        </tr>
+        <tr class="thumb">
+          <td>
+            <img
+              src="https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg" />
+          </td>
+          <td>
+            <img
+              src="https://images.pexels.com/photos/1366998/pexels-photo-1366998.jpeg" />
+          </td>
+          <td>
+            <img
+              src="https://images.pexels.com/photos/3510/hand-apple-iphone-smartphone.jpg" />
+          </td>
+        </tr>
+      </table>
+      <br /><br />
+      <div>
+        <input type="radio" name="rdo_style" value="Option 1" v-on:change="index=0" checked="checked" />
+        Phone 1 <br />
+        <input type="radio" name="rdo_style" value="Option 2" v-on:change="index=1" /> Phone 2 <br />
+        <input type="radio" name="rdo_style" value="Option 3" v-on:change="index=2" /> Phone 3 <br />
+        <br /><br />
+      </div>
+    </div>
+    <div id="cart_calcing">
+      <div>Quantity: <input type="text" value="1" v-model="inp" /></div>
+      <input type="button" value="Add to cart" @click="calc"/><br />
+      <div>Cart: {{ cart }}</div>
+    </div>
+
+    <script>
+      const app = new Vue({
+        el: "#vue_app",
+        data: {
+          inpText: "initial text",
+          sources: [
+            "https://images.pexels.com/photos/1294886/pexels-photo-1294886.jpeg",
+            "https://images.pexels.com/photos/1366998/pexels-photo-1366998.jpeg",
+            "https://images.pexels.com/photos/3510/hand-apple-iphone-smartphone.jpg",
+          ],
+          index: 1,
+        },
+      });
+      const cart_calcing = new Vue({
+        el: "#cart_calcing",
+        data: {
+          cart: 0,
+          inp: 0,
+        },
+        methods: {
+          calc: function() {
+            if (!isNaN(parseInt(this.inp))) {
+              this.cart += parseInt(this.inp) ? parseInt(this.inp) > 0 : 0;
+            } else {
+              this.cart += 0;
+            }
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
